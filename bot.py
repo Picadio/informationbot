@@ -12,7 +12,9 @@ db_password=x[1].split("@")[0]
 db_host=x[1].split("@")[1]
 db_name=x[2].split("/")[1]
 Bot = commands.Bot(command_prefix='.')
-
+@Bot.event
+async def on_ready():
+    print("Bot is online")
 @Bot.command(pass_context=True)
 async def info(ctx, user:discord.Member):
     conn = psycopg2.connect(dbname=db_name, user=db_user, 
