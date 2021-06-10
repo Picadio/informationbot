@@ -29,7 +29,7 @@ async def info(ctx, user:discord.Member):
             break
         row = cursor.fetchone()
     if q==0:
-        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, {1}, "❌", "❌", "❌")'''.format(user.id, "None") )
+        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, "None", "❌", "❌", "❌")'''.format(user.id) )
         conn.commit()
     cursor.close()
     conn.close()
