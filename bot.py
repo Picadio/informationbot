@@ -98,7 +98,7 @@ async def set_description(ctx, s):
     cursor.execute('SELECT * FROM info')
 
     
-    cursor.execute('''UPDATE info SET des=? WHERE id=?''',(s,ctx.message.author.id))
+    cursor.execute('''UPDATE info SET des={} WHERE id={}'''.format(s,ctx.message.author.id))
     conn.commit()
     await ctx.message.channel.send("Описание было успешно изменено")     
        
