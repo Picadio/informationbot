@@ -87,12 +87,13 @@ async def set_description(ctx, s):
             break
         row = cursor.fetchone()
     if q==0:
-        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, "None", "❌", "❌", "❌")'''.format(ctx.message.author.id) )
+        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, 'None', '❌', '❌', '❌')'''.format(ctx.message.author.id) )
         conn.commit()  
     cursor.close()
     conn.close()
 
-    conn = sqlite3.connect("mybase.sqlite")
+    conn = psycopg2.connect(dbname=db_name, user=db_user, 
+                       password=db_password, host=db_host)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM info')
 
@@ -119,11 +120,12 @@ async def like(ctx, user:discord.Member):
             break
         row = cursor.fetchone()
     if q==0:
-        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, "None", "❌", "❌", "❌")'''.format(user.id) )
+        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, 'None', '❌', '❌', '❌')'''.format(user.id) )
         conn.commit()  
     cursor.close()
     conn.close()
-    conn = sqlite3.connect("mybase.sqlite")
+    conn = psycopg2.connect(dbname=db_name, user=db_user, 
+                       password=db_password, host=db_host)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM info')
     
@@ -153,11 +155,12 @@ async def dislike(ctx, user:discord.Member):
             break
         row = cursor.fetchone()
     if q==0:
-        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, "None", "❌", "❌", "❌")'''.format(user.id) )
+        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, 'None', '❌', '❌', '❌')'''.format(user.id) )
         conn.commit()
     cursor.close()
     conn.close()
-    conn = sqlite3.connect("mybase.sqlite")
+    conn = psycopg2.connect(dbname=db_name, user=db_user, 
+                       password=db_password, host=db_host)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM info')
    
