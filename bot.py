@@ -180,7 +180,8 @@ async def crtable(ctx):
                        password=db_password, host=db_host)
     
     cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE info (id bigint, likee integer, dislike integer, des text, vpl bool, vx bool, va bool)''')
+    cursor.execute('''CREATE TABLE info (id bigint, likee integer, dislike integer, des text, vpl text, vx text, va text)''')
+    conn.commit()
     print("Sucessful")
     cursor.close()
     conn.close()
