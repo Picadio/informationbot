@@ -214,7 +214,7 @@ async def crtable(ctx):
         print("Sucessful")
         cursor.close()
         conn.close()
-     else:
+    else:
         await ctx.message.channel.send("Это команда доступна только разработчикам!")      
 
 Bot.run(str(os.environ.get("Token")))
