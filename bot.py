@@ -200,19 +200,21 @@ async def dislike(ctx, user:discord.Member):
     
     cursor.close()
     conn.close()
-
+@Bot.remove_command("help")
 @Bot.command(pass_context=True)
 async def crtable(ctx):
-    
+    if ctx.message.author.id == "343279631807545356":
    
-    conn = psycopg2.connect(dbname=db_name, user=db_user, 
-                       password=db_password, host=db_host)
-    
-    cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE info (id bigint, likee integer, dislike integer, des text, vpl text, vx text, va text)''')
-    conn.commit()
-    print("Sucessful")
-    cursor.close()
-    conn.close()
+        conn = psycopg2.connect(dbname=db_name, user=db_user, 
+                           password=db_password, host=db_host)
+
+        cursor = conn.cursor()
+        cursor.execute('''CREATE TABLE info (id bigint, likee integer, dislike integer, des text, vpl text, vx text, va text)''')
+        conn.commit()
+        print("Sucessful")
+        cursor.close()
+        conn.close()
+     else:
+        await ctx.message.channel.send("Это команда доступна только разработчикам!")      
 
 Bot.run(str(os.environ.get("Token")))
