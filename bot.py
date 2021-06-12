@@ -118,88 +118,95 @@ async def set_description(ctx, s):
     
 @Bot.command(pass_context=True)
 async def like(ctx, user:discord.Member):
-    conn = psycopg2.connect(dbname=db_name, user=db_user, 
-                       password=db_password, host=db_host)
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM info')
-    row = cursor.fetchone()
-
-    q=bool(0)
-    while row is not None:
-        if user.id in row:
-            q=bool(1)
-            break
+    if user.id != ctx.message.author.id:
+        conn = psycopg2.connect(dbname=db_name, user=db_user, 
+                           password=db_password, host=db_host)
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM info')
         row = cursor.fetchone()
-    if q==0:
-        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, 'None', '❌', '❌', '❌')'''.format(user.id) )
-        conn.commit()  
-    cursor.close()
-    conn.close()
-    conn = psycopg2.connect(dbname=db_name, user=db_user, 
-                       password=db_password, host=db_host)
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM info')
-    row = cursor.fetchone()
 
- 
-    while row is not None:
-        if user.id in row:
-            a=row[1]+1
-            if a>=20:
-                cursor.execute('''UPDATE info SET vpl=? WHERE id=?''',("✅",user.id))
-            cursor.execute('''UPDATE info SET likee={0} WHERE id={1}'''.format(a,user.id))
-            conn.commit()
-            await ctx.message.channel.send("Вы поставили Like "+user.name) 
-            break
+        q=bool(0)
+        while row is not None:
+            if user.id in row:
+                q=bool(1)
+                break
+            row = cursor.fetchone()
+        if q==0:
+            cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, 'None', '❌', '❌', '❌')'''.format(user.id) )
+            conn.commit()  
+        cursor.close()
+        conn.close()
+        conn = psycopg2.connect(dbname=db_name, user=db_user, 
+                           password=db_password, host=db_host)
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM info')
         row = cursor.fetchone()
-    
-          
-       
-    cursor.close()
-    conn.close()
+
+
+        while row is not None:
+            if user.id in row:
+                a=row[1]+1
+                if a>=20:
+                    cursor.execute('''UPDATE info SET vpl=? WHERE id=?''',("✅",user.id))
+                cursor.execute('''UPDATE info SET likee={0} WHERE id={1}'''.format(a,user.id))
+                conn.commit()
+                await ctx.message.channel.send("Вы поставили Like "+user.name) 
+                break
+            row = cursor.fetchone()
+
+
+
+        cursor.close()
+        conn.close()
+    else:
+        await ctx.message.channel.send("Вы не можете себе поставить Like") 
 
 @Bot.command(pass_context=True)
 async def dislike(ctx, user:discord.Member):
-    conn = psycopg2.connect(dbname=db_name, user=db_user, 
-                       password=db_password, host=db_host)
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM info')
-    row = cursor.fetchone()
-
-    q=bool(0)
-    while row is not None:
-        if user.id in row:
-            q=bool(1)
-            break
+    if user.id != ctx.message.author.id:
+        conn = psycopg2.connect(dbname=db_name, user=db_user, 
+                           password=db_password, host=db_host)
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM info')
         row = cursor.fetchone()
-    if q==0:
-        cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, 'None', '❌', '❌', '❌')'''.format(user.id) )
-        conn.commit()
-    cursor.close()
-    conn.close()
-    conn = psycopg2.connect(dbname=db_name, user=db_user, 
-                       password=db_password, host=db_host)
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM info')
-    conn = psycopg2.connect(dbname=db_name, user=db_user, 
-                       password=db_password, host=db_host)
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM info')
-    row = cursor.fetchone()
 
-    q=bool(0)
-    while row is not None:
-        if ctx.message.author.id in row:
-            a=row[2]+1
-            cursor.execute('''UPDATE info SET dislike={0} WHERE id={1}'''.format(a,user.id))
+        q=bool(0)
+        while row is not None:
+            if user.id in row:
+                q=bool(1)
+                break
+            row = cursor.fetchone()
+        if q==0:
+            cursor.execute('''INSERT INTO info (id,likee,dislike,des,vpl,vx,va) VALUES ({0},0, 0, 'None', '❌', '❌', '❌')'''.format(user.id) )
             conn.commit()
-            await ctx.message.channel.send("Вы поставили Dislike "+user.name)       
-            break
+        cursor.close()
+        conn.close()
+        conn = psycopg2.connect(dbname=db_name, user=db_user, 
+                           password=db_password, host=db_host)
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM info')
+        conn = psycopg2.connect(dbname=db_name, user=db_user, 
+                           password=db_password, host=db_host)
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM info')
         row = cursor.fetchone()
-      
-    
-    cursor.close()
-    conn.close()
+
+        q=bool(0)
+        while row is not None:
+            if ctx.message.author.id in row:
+                a=row[2]+1
+                cursor.execute('''UPDATE info SET dislike={0} WHERE id={1}'''.format(a,user.id))
+                conn.commit()
+                await ctx.message.channel.send("Вы поставили Dislike "+user.name)       
+                break
+            row = cursor.fetchone()
+
+
+        cursor.close()
+        conn.close()
+    else:
+        await ctx.message.channel.send("Вы не можете себе поставить Dislike") 
+        
 @Bot.remove_command("help")
 @Bot.command(pass_context=True)
 async def crtable(ctx):
